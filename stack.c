@@ -1,58 +1,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// maximaum size for the stack
-int max_size;
 
-// pointer to a dynamic allocated memory of stack
-int* stack;
-
-// index to the top most value
-int top = -1;
 
 /*
-	Menu Driven program to use 
+	Menu Driven program to use
 	stack as a datatype to store values.
 */
-int menu();
+int stack_menu();
 
 /*
 	Get the value at top.
 	@return value at top
 */
-int peek();
+int peek(int* stack,int top);
 
 /*
 	Delete the value at the top.
 	@return 0 if failed and 1 if completed
 */
-int pop();
+int pop(int* stack, int* top);
 
 /*
 	Add a value at the top of the stack
 	@param value to add it to the stack
 	@return 0 if failed and 1 if completed
 */
-int push(int value);
+int push(int* stack, int* top, int max_size, int value);
 
 /*
 	Check if stack is empty or not.
 	@return 1 if empty.
 */
-int is_empty();
+int is_empty(int top);
 
 /*
 	Check if stack is full or not.
 	@return 1 if stack is full
 */
-int is_full();
+int is_full(int top, int size);
 
 
 int main() {
-	return menu();
+	return stack_menu();
 }
 
-int menu() {
+int stack_menu() {
+
+	// maximaum size for the stack
+	int max_size;
+
+	// pointer to a dynamic allocated memory of stack
+	int* stack;
+
+	// index to the top most value
+	int top = -1;
+
+
 	printf("Enter the size of Stack:\n>> ");
 
 	scanf_s("%d", &max_size);
@@ -71,14 +75,14 @@ int menu() {
 		case 1:
 			printf("\n Enter value:\n>> ");
 			scanf_s("%d", &value);
-			push(value);
+			push(stack, &top, max_size, value);
 			break;
 		case 2:
-			pop();
+			pop(stack, &top);
 			break;
 		case 3:
-			if (!is_empty()) {
-				value = peek();
+			if (!is_empty(top)) {
+				value = peek(stack, top);
 				printf("\nValue at top is: %d", value);
 			}
 			else
@@ -93,36 +97,36 @@ int menu() {
 }
 
 
-int is_empty() {
+int is_empty(int top) {
 	return top == -1;
 }
-int is_full() {
+int is_full(int top, int max_size) {
 	return top == max_size - 1;
 }
 
-int peek() {
+int peek(int* stack, int top) {
 	return stack[top];
 }
 
-int pop() {
-	if (is_empty()) {
+int pop(int* stack, int* top) {
+	if (is_empty(top)) {
 		printf("STACK IS EMPTY");
 		return 0;
 	}
 	else {
-		top--;
+		(*top)--;
 		return 1;
 	}
 }
 
-int push(int value) {
-	if (is_full()) {
+int push(int* stack, int* top, int max_size, int value) {
+	if (is_full(top, max_size)) {
 		printf("STACK IS FULL");
 		return 0;
 	}
 	else {
-		top++;
-		stack[top] = value;
+		(*top)++;
+		stack[*top] = value;
 		return 1;
 	}
 }
