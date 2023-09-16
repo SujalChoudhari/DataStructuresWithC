@@ -1,15 +1,39 @@
 #include <stdio.h>
 #include <stdlib.h>
+
+/*
+    Menu driven program to use queue
+*/
 void queue_menu();
+
+/*
+    Add an element to the given queue
+*/
 int enqueue(int *queue, int *top, int *rear, int size, int data);
 
+/*
+    Remove an element from the given queue
+*/
 int dequeue(int *queue, int *top, int *rear);
 
+/*
+    See the element at the front
+*/
 int front(int *queue, int top);
 
+/*
+    See the rear element of the queue
+*/
 int rear(int *queue, int back);
 
+/*
+    Check if queue is empty
+*/
 int queue_is_empty(int back_or_top);
+
+/*
+    Check if queue is full
+*/
 int queue_is_full(int back, int size);
 
 void queue_display(int *queue, int top, int rear);

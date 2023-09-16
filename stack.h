@@ -147,7 +147,7 @@ void display(int *stack, int top)
 	else
 	{
 		printf("Stack: [");
-		for (int i = 0; i <= top; i++)
+		for (int i = top; i >= 0; i--)
 		{
 			printf("%d ", stack[i]);
 		}
