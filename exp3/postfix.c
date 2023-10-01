@@ -16,6 +16,11 @@ int is_operator(char ch, char *precedence);
 */
 int is_first_of_higher_precedence(char first, char second, char *precedence);
 
+// check if the given char is a ([{
+int is_opening_bracket(char);
+// check if the given char is a )]}
+int is_closing_bracket(char);
+
 int main()
 {
     const char *PRECEDENCE = "^*/+-";
@@ -37,7 +42,10 @@ int main()
         if (is_operator(current_token, PRECEDENCE)) // operator
         {
 
-            while (!is_empty(top) && peek(stack,top) != '(' && is_first_of_higher_precedence(peek(stack, top), current_token, PRECEDENCE))
+            while (
+                !is_empty(top) 
+                && !is_opening_bracket(peek(stack, top)) 
+                && is_first_of_higher_precedence(peek(stack, top), current_token, PRECEDENCE))
             {
                 postfixed[postfixed_index] = peek(stack, top);
                 postfixed_index++;
@@ -46,13 +54,13 @@ int main()
 
             push(stack, &top, MAX_SIZE, current_token);
         }
-        else if (current_token == '(') // start of a parenthesis
+        else if (is_opening_bracket(current_token)) // start of a parenthesis
         {
             push(stack, &top, MAX_SIZE, current_token);
         }
-        else if (current_token == ')') // end of paren
+        else if (is_closing_bracket(current_token)) // end of paren
         {
-            while (peek(stack, top) != '(')
+            while (!is_opening_bracket(peek(stack, top)))
             {
                 postfixed[postfixed_index] = peek(stack, top);
                 postfixed_index++;
@@ -69,15 +77,15 @@ int main()
         counter++;
     }
 
-    while(!is_empty(top)){
-        postfixed[postfixed_index] = peek(stack,top);
+    while (!is_empty(top))
+    {
+        postfixed[postfixed_index] = peek(stack, top);
         postfixed_index++;
-        pop(stack,&top);
+        pop(stack, &top);
     }
 
     postfixed[postfixed_index] = '\0';
     printf("%s \n", postfixed);
-    display(stack, top);
     return 0;
 }
 
@@ -89,6 +97,16 @@ int is_operator(char ch, char *precedence)
             return 1;
     }
     return 0;
+}
+
+int is_opening_bracket(char cha)
+{
+    return cha == '(' || cha == '[' || cha == '{';
+}
+
+int is_closing_bracket(char cha)
+{
+    return cha == '(' || cha == '[' || cha == '{';
 }
 
 int is_first_of_higher_precedence(char first, char second, char *precedence)
