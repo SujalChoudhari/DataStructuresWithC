@@ -21,21 +21,31 @@ int is_opening_bracket(char);
 // check if the given char is a )]}
 int is_closing_bracket(char);
 
+// converter
+int convert(char *input, char *postfixed);
+
 int main()
 {
-    const char *PRECEDENCE = "^*/+-";
-
-    char *stack = (char *)calloc(MAX_SIZE, sizeof(char));
-    int top = -1;
 
     char input[MAX_SIZE];
 
     char postfixed[MAX_SIZE];
-    int postfixed_index = 0;
+
     printf(">>> ");
     scanf("%s", input);
+    convert(input, postfixed);
 
+    printf("%s \n", postfixed);
+}
+
+int convert(char *input, char *postfixed)
+{
+    char *stack = (char *)calloc(MAX_SIZE, sizeof(char));
+    int top = -1;
+
+    const char *PRECEDENCE = "^*/+-";
     int counter = 0;
+    int postfixed_index = 0;
     while (input[counter] != '\0' && counter < MAX_SIZE)
     {
         char current_token = input[counter];
@@ -43,9 +53,7 @@ int main()
         {
 
             while (
-                !is_empty(top) 
-                && !is_opening_bracket(peek(stack, top)) 
-                && is_first_of_higher_precedence(peek(stack, top), current_token, PRECEDENCE))
+                !is_empty(top) && !is_opening_bracket(peek(stack, top)) && is_first_of_higher_precedence(peek(stack, top), current_token, PRECEDENCE))
             {
                 postfixed[postfixed_index] = peek(stack, top);
                 postfixed_index++;
@@ -85,7 +93,7 @@ int main()
     }
 
     postfixed[postfixed_index] = '\0';
-    printf("%s \n", postfixed);
+
     return 0;
 }
 
