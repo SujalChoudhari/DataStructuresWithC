@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "stack.h"
+#include <string.h>
 
 #define MAX_SIZE 20
 
@@ -24,6 +25,9 @@ int is_closing_bracket(char);
 // converter
 int convert(char *input, char *postfixed);
 
+// evaluate
+int evaluate(char *input);
+
 int main()
 {
 
@@ -36,6 +40,48 @@ int main()
     convert(input, postfixed);
 
     printf("%s \n", postfixed);
+
+    int res = evaluate(postfixed);
+    printf("Result is %d\n",res);
+}
+
+int evaluate(char *input)
+{
+    printf("Postfix expression: %s\n", input);
+    int valueStack[100];
+    int top = -1;
+    int len = strlen(input);
+    int operand1, operand2;
+    for (int i = 0; i < len; ++i)
+    {
+        if (!is_operator(input[i], "^*/+-"))
+        {
+            printf("Enter value for %c: ", input[i]);
+            scanf("%d", &valueStack[++top]);
+        }
+        else
+        {
+            operand2 = valueStack[top--];
+            operand1 = valueStack[top--];
+            switch (input[i])
+            {
+            case '+':
+                valueStack[++top] = operand1 + operand2;
+                break;
+            case '-':
+                valueStack[++top] = operand1 - operand2;
+                break;
+            case '*':
+                valueStack[++top] = operand1 * operand2;
+                break;
+            case '/':
+                valueStack[++top] = operand1 / operand2;
+                break;
+            }
+        }
+    }
+
+    return valueStack[top];
 }
 
 int convert(char *input, char *postfixed)

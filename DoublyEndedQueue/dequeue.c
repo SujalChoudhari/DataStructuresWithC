@@ -17,6 +17,16 @@ int enqueue_back(int *queue, int *top, int *rear, int size, int data);
 int dequeue_front(int *queue, int *top, int *rear);
 
 /*
+    Add an element to the given queue
+*/
+int enqueue_front(int *queue, int *top, int *rear, int size, int data);
+
+/*
+    Remove an element from the given queue
+*/
+int dequeue_back(int *queue, int *top, int *rear);
+
+/*
     See the element at the front
 */
 int front(int *queue, int top);
@@ -59,7 +69,7 @@ void queue_menu()
     printf("QUEUE of size %d is created!\n", max_size);
     while (1)
     {
-        printf("\n\n1. Enqueue\n2. Dequeue\n3. Front\n4. Rear\n5. Display\n6.Quit\n>> ");
+        printf("\n\n1. EnqueueBack\n2. DequeueFront\n3. Front\n4. Rear\n5. Display\n6.EnqueueFront\n7.DequeueBack\n\n8.Quit\n>> ");
         int choice;
         scanf("%d", &choice);
 
@@ -94,6 +104,14 @@ void queue_menu()
             break;
         case 5:
             queue_display(queue, top, back);
+            break;
+        case 6:
+            printf("\n Enter value:\n>> ");
+            scanf("%d", &value);
+            enqueue_front(queue, &top, &back, max_size, value);
+            break;
+        case 7:
+            dequeue_back(queue, &top, &back);
             break;
         default:
             return;
@@ -195,4 +213,51 @@ int dequeue_front(int *queue, int *top, int *rear)
         (*top)++;
         return 1;
     }
+}
+
+int enqueue_front(int *queue, int *top, int *rear, int size, int data)
+{
+    if (queue_is_empty(*top))
+    {
+        *top = 0;
+        *rear = 0;
+        queue[*rear] = data;
+        return 1;
+    }
+    else if (*top == 0)
+    {
+        printf("QUEUE IS FULL");
+        return 0;
+    }
+    else
+    {
+        (*top) -= 1;
+        queue[*top] = data;
+        return 1;
+    }
+}
+
+int dequeue_back(int *queue, int *top, int *rear)
+{
+    if (queue_is_empty(*top))
+    {
+        printf("QUEUE IS EMPTY");
+        return 0;
+    }
+    else if (*top == *rear)
+    {
+        *top = -1;
+        *rear = -1;
+        return 1;
+    }
+    else
+    {
+        (*rear)--;
+        return 1;
+    }
+}
+
+void main()
+{
+    queue_menu();
 }
