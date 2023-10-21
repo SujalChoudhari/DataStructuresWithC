@@ -14,17 +14,7 @@ int enqueue(int *queue, int *top, int *rear, int size, int data);
 /*
     Remove an element from the given queue
 */
-int dequeue(int *queue, int *top, int *rear);
-
-/*
-    Add an element to the given queue
-*/
-int enqueue_front(int *queue, int *top, int *rear, int size, int data);
-
-/*
-    Remove an element from the given queue
-*/
-int dequeue_back(int *queue, int *top, int *rear);
+int dequeue(int *queue, int *top, int *rear, int size);
 
 /*
     See the element at the front
@@ -44,9 +34,9 @@ int queue_is_empty(int back_or_top);
 /*
     Check if queue is full
 */
-int queue_is_full(int back, int size);
+int queue_is_full(int back, int top, int size);
 
-void queue_display(int *queue, int top, int rear);
+void queue_display(int *queue, int top, int rear, int size);
 
 void queue_menu()
 {
@@ -66,10 +56,10 @@ void queue_menu()
 
     queue = (int *)calloc(max_size, sizeof(int));
 
-    printf("QUEUE of size %d is created!\n", max_size);
+    printf("CIRCULAR QUEUE of size %d is created!\n", max_size);
     while (1)
     {
-        printf("\n\n1. EnqueueBack\n2. DequeueFront\n3. Front\n4. Rear\n5. Display\n6.EnqueueFront\n7.DequeueBack\n\n8.Quit\n>> ");
+        printf("\n\n1. Enqueue\n2. Dequeue\n3. Front\n4. Rear\n5. Display\n6.Quit\n>> ");
         int choice;
         scanf("%d", &choice);
 
@@ -82,7 +72,7 @@ void queue_menu()
             enqueue(queue, &top, &back, max_size, value);
             break;
         case 2:
-            dequeue(queue, &top, &back);
+            dequeue(queue, &top, &back, max_size);
             break;
         case 3:
             if (!queue_is_empty(top))
@@ -103,15 +93,7 @@ void queue_menu()
                 printf("QUEUE IS EMPTY");
             break;
         case 5:
-            queue_display(queue, top, back);
-            break;
-        case 6:
-            printf("\n Enter value:\n>> ");
-            scanf("%d", &value);
-            enqueue_front(queue, &top, &back, max_size, value);
-            break;
-        case 7:
-            dequeue_back(queue, &top, &back);
+            queue_display(queue, top, back,max_size);
             break;
         default:
             return;
@@ -120,7 +102,7 @@ void queue_menu()
     }
 }
 
-void queue_display(int *queue, int top, int rear)
+void queue_display(int *queue, int top, int rear, int size)
 {
     if (queue_is_empty(top))
     {
@@ -129,17 +111,18 @@ void queue_display(int *queue, int top, int rear)
     else
     {
         printf("Queue: [");
-        for (int i = top; i <= rear; i++)
-        {
-            printf("%d ", queue[i]);
+        int index = top;
+        while(index != rear){
+            printf("%d",queue[index]);
+            index = (index + 1) % size;
         }
         printf("]\n");
     }
 }
 
-int queue_is_full(int rear, int size)
+int queue_is_full(int rear, int top, int size)
 {
-    return rear == size - 1 ? 1 : 0;
+    return rear == (top -1) % size;
 }
 
 int queue_is_empty(int back_or_top)
@@ -182,20 +165,20 @@ int enqueue(int *queue, int *top, int *rear, int size, int data)
         queue[*rear] = data;
         return 1;
     }
-    else if (queue_is_full(*rear, size))
+    else if (queue_is_full(*rear, *top, size))
     {
         printf("QUEUE IS FULL");
         return 0;
     }
     else
     {
-        (*rear) += 1;
+        (*rear) = ((*rear) + 1) % size;
         queue[*rear] = data;
         return 1;
     }
 }
 
-int dequeue(int *queue, int *top, int *rear)
+int dequeue(int *queue, int *top, int *rear, int size)
 {
     if (queue_is_empty(*top))
     {
@@ -210,49 +193,7 @@ int dequeue(int *queue, int *top, int *rear)
     }
     else
     {
-        (*top)++;
-        return 1;
-    }
-}
-
-int enqueue_front(int *queue, int *top, int *rear, int size, int data)
-{
-    if (queue_is_empty(*top))
-    {
-        *top = 0;
-        *rear = 0;
-        queue[*rear] = data;
-        return 1;
-    }
-    else if (*top == 0)
-    {
-        printf("QUEUE IS FULL");
-        return 0;
-    }
-    else
-    {
-        (*top) -= 1;
-        queue[*top] = data;
-        return 1;
-    }
-}
-
-int dequeue_back(int *queue, int *top, int *rear)
-{
-    if (queue_is_empty(*top))
-    {
-        printf("QUEUE IS EMPTY");
-        return 0;
-    }
-    else if (*top == *rear)
-    {
-        *top = -1;
-        *rear = -1;
-        return 1;
-    }
-    else
-    {
-        (*rear)--;
+        (*top) = ((*top) + 1) % size;
         return 1;
     }
 }

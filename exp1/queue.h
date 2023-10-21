@@ -9,12 +9,12 @@ void queue_menu();
 /*
     Add an element to the given queue
 */
-int enqueue_back(int *queue, int *top, int *rear, int size, int data);
+int enqueue(int *queue, int *top, int *rear, int size, int data);
 
 /*
     Remove an element from the given queue
 */
-int dequeue_front(int *queue, int *top, int *rear);
+int dequeue(int *queue, int *top, int *rear);
 
 /*
     See the element at the front
@@ -69,10 +69,10 @@ void queue_menu()
         case 1:
             printf("\n Enter value:\n>> ");
             scanf("%d", &value);
-            enqueue_back(queue, &top, &back, max_size, value);
+            enqueue(queue, &top, &back, max_size, value);
             break;
         case 2:
-            dequeue_front(queue, &top, &back);
+            dequeue(queue, &top, &back);
             break;
         case 3:
             if (!queue_is_empty(top))
@@ -155,7 +155,7 @@ int rear(int *queue, int back)
     }
 }
 
-int enqueue_back(int *queue, int *top, int *rear, int size, int data)
+int enqueue(int *queue, int *top, int *rear, int size, int data)
 {
     if (queue_is_empty(*top))
     {
@@ -177,7 +177,7 @@ int enqueue_back(int *queue, int *top, int *rear, int size, int data)
     }
 }
 
-int dequeue_front(int *queue, int *top, int *rear)
+int dequeue(int *queue, int *top, int *rear)
 {
     if (queue_is_empty(*top))
     {
