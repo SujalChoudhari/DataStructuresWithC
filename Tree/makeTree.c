@@ -40,5 +40,11 @@ int main(int argc, char const *argv[])
 
 Node *maketree(int inorder[], int postorder[], int size, int rootIndex)
 {
-    
+    int value = postorder[rootIndex];
+    Node *root = createNode(value);
+
+    int rootIndexInInOrder
+
+    int* leftSubTree = (int*) calloc(sizeof int)
+
 }
