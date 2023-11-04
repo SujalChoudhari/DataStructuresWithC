@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #define nullptr NULL
+
 typedef struct Node
 {
     struct Node *left;
@@ -44,9 +45,9 @@ Node *insert(Node *root, int value)
     {
         root->right = insert(root->right, value);
     }
-
     return root;
 }
+
 Node *addElement(Node *root)
 {
     int value;
@@ -89,12 +90,14 @@ void kthLargestElement(Node *root)
     kthLargestFinder(root, k, &count);
 }
 
-int balancedChecker(Node* head){
+int balancedChecker(Node *head)
+{
 
-    if(head != nullptr){
-        
+    if (head != nullptr)
+    {
     }
-    else return 0;
+    else
+        return 0;
 }
 
 int main(int argc, char const *argv[])
@@ -120,8 +123,10 @@ int main(int argc, char const *argv[])
             break;
         case 3:
             kthLargestElement(root);
-            case 4:
-
+            break;
+        case 4:
+            balancedChecker(root);
+            break;
         default:
             return 0;
         }
