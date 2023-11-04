@@ -62,24 +62,37 @@ void postOrderTraversal(Node *root)
     }
 }
 
-Node *makeTree(int parentValue, int dir)
+Node *insert(Node *root, int value)
 {
-
-    int value = -1;
-    if (dir != -1)
-        printf("Enter %s of %d\n>>> ", dir ? "right" : "left", parentValue);
+    if (root == nullptr)
+    {
+        root = createNode(value);
+    }
+    else if (root->data > value)
+    {
+        root->left = insert(root->left, value);
+    }
     else
-        printf("Enter Value of root node of parent %d\n>>> ", parentValue);
+    {
+        root->right = insert(root->right, value);
+    }
 
-    scanf("%d", &value);
-    if (value == -1)
-        return nullptr;
+    return root;
+}
+Node *addElement(Node *root)
+{
+    while (1)
+    {
+        int value;
+        printf("\nEnter Value:");
+        scanf("%d", &value);
 
-    Node *root = createNode(value);
-
-    root->left = makeTree(value, 0);
-    root->right = makeTree(value, 1);
-
+        // Insert
+        if (value != -1)
+            root = insert(root, value);
+        else
+            return root;
+    }
     return root;
 }
 
@@ -130,9 +143,8 @@ int main(int argc, char const *argv[])
     postOrderTraversal(root);
     printf("\n");
 
-
-
-    Node *newTree = makeTree(0, -1);
+    Node *newTree = nullptr;
+    newTree = addElement(newTree);
 
     printf("INORDER: ");
     inOrderTraversal(newTree);
