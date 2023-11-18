@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void selection_sort(int *array, int n)
 {
     for (int i = 0; i < n - 2; i++)
     {
         int imin = i;
-        for (int j = i + 1; j < n - 1; j++)
+        for (int j = i + 1; j < n; j++)
         {
             if (array[j] < array[imin])
             {
@@ -21,8 +22,17 @@ void selection_sort(int *array, int n)
 
 void main()
 {
-    int array[] = {40, 50, 20, 10, 5, 6, 7, 29, 55};
-    int n = 9;
+    int n = 0;
+    printf("Enter no of elements:\n>>> ");
+    scanf("%d", &n);
+
+    int *array = (int *)calloc(n, sizeof(0));
+
+    for (int i = 0; i < n; i++)
+    {
+        printf("\nEnter elements: \n>>> ");
+        scanf("%d", &array[i]);
+    }
 
     selection_sort(array, n);
 
@@ -30,4 +40,6 @@ void main()
     {
         printf("%d ", array[i]);
     }
+
+    printf("\n");
 }
