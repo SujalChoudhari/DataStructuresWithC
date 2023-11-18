@@ -3,7 +3,7 @@
 
 void selection_sort(int *array, int n)
 {
-    for (int i = 0; i < n - 2; i++)
+    for (int i = 0; i < n - 1; i++)
     {
         int imin = i;
         for (int j = i + 1; j < n; j++)
@@ -13,6 +13,13 @@ void selection_sort(int *array, int n)
                 imin = j;
             }
         }
+
+        printf("\nPass: %d:\t", i);
+        for (int p = 0; p < n; p++)
+        {
+            printf("%d ", array[p]);
+        }
+        
 
         int temp = array[i];
         array[i] = array[imin];
@@ -35,11 +42,6 @@ void main()
     }
 
     selection_sort(array, n);
-
-    for (int i = 0; i < n; i++)
-    {
-        printf("%d ", array[i]);
-    }
 
     printf("\n");
 }
