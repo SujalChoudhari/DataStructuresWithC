@@ -90,14 +90,56 @@ void kthLargestElement(Node *root)
     kthLargestFinder(root, k, &count);
 }
 
+int height(Node *node)
+{
+    if (node == nullptr)
+    {
+        return 0;
+    }
+    int leftHeight = height(node->left);
+    int rightHeight = height(node->right);
+    return (leftHeight > rightHeight ? leftHeight : rightHeight) + 1;
+}
+
 int balancedChecker(Node *head)
 {
-
-    if (head != nullptr)
+    if (head == nullptr)
     {
+        return 1;
+    }
+    int leftHeight = height(head->left);
+    int rightHeight = height(head->right);
+
+    if (abs(leftHeight - rightHeight) <= 1 && balancedChecker(head->left) && balancedChecker(head->right))
+    {
+        printf("Tree is balanced.\n");
+        return 1;
     }
     else
+    {
+        printf("Tree is not balanced.\n");
         return 0;
+    }
+}
+
+void printElementsInRange(Node *head, int k1, int k2)
+{
+    if (head == nullptr)
+    {
+        return;
+    }
+    if (head->data > k1)
+    {
+        printElementsInRange(head->left, k1, k2);
+    }
+    if (head->data >= k1 && head->data <= k2)
+    {
+        printf("%d ", head->data);
+    }
+    if (head->data < k2)
+    {
+        printElementsInRange(head->right, k1, k2);
+    }
 }
 
 int main(int argc, char const *argv[])
@@ -106,12 +148,14 @@ int main(int argc, char const *argv[])
     while (1)
     {
         int choice = 0;
+        int k1 = 0, k2 = 0;
+        printf("\n====+-- BST MENU --+====\n");
         printf("1. Enter Element\n");
         printf("2. Display Inorder\n");
         printf("3. Find kth Element\n");
         printf("4. Is Balanced\n");
+        printf("5. Print Elements in Range\n>>> ");
         scanf("%d", &choice);
-
         switch (choice)
         {
         case 1:
@@ -126,6 +170,13 @@ int main(int argc, char const *argv[])
             break;
         case 4:
             balancedChecker(root);
+            break;
+        case 5:
+            printf("\nLower Bound: ");
+            scanf("%d", &k1);
+            printf("\nEnter Upper Bound: ");
+            scanf("%d", &k2);
+            printElementsInRange(root, k1, k2);
             break;
         default:
             return 0;
