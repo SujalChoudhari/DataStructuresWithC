@@ -20,11 +20,13 @@ void dfs(int **array, int s, int number_of_nodes, int *stack, int *top, int *vis
                 if (array[v][i] && !visited[i]) {
                     (*top)++;
                     stack[*top] = i;
+                    break;  // Break after pushing a new node to the stack
                 }
             }
         }
     }
 }
+
 
 int main() {
     int number_of_nodes;
